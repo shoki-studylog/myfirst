@@ -4,11 +4,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+//フォームクラス（HTMLで入力した値をformから送られて、このクラスのインスタンスで受け取る。）
 public class InquiryForm {
 
+    // バリデーション（最小値、最大値を制御、messageで独自のエラー文を定義）
     @Size(min = 1, max = 20, message = "Please input 20characters or less")
     private String name;
 
+    // バリデーション（NotNull=nullを制限、Email=メールアドレスの形式かどうかチェックする、messageで独自のエラー文を定）
     @NotNull
     @Email(message = "Invalid E-mail Format")
     private String email;
