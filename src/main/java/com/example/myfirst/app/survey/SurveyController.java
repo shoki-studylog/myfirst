@@ -5,15 +5,18 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequestMapping("/survey")
 public class SurveyController {
 
     // formにGETリクエストした場合（初期遷移時）
-    @GetMapping("/survey/form")
-    public String form(SurveyForm surveyform, Model model) {
+    @GetMapping("/form")
+    public String form(SurveyForm surveyform, Model model, @ModelAttribute("complete") String complete) {
 
         model.addAttribute("title", "Survey Form");
         return "/survey/form";
@@ -21,14 +24,14 @@ public class SurveyController {
     }
 
     // formにPOSTリクエストした時（戻るボタンクリック時）
-    @PostMapping("/survey/form")
+    @PostMapping("/form")
     public String formGoBack(SurveyForm surveyForm, Model model) {
         model.addAttribute("title", "Survey Form");
         return "/survey/form";
     }
 
     // confirmにPOSTリクエストした時（formから確認ボタンクリック時）
-    @PostMapping("/survey/confirm")
+    @PostMapping("/confirm")
     public String confirm(@Validated SurveyForm surveyForm, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
@@ -39,7 +42,7 @@ public class SurveyController {
         return "/survey/confirm";
     }
 
-    @PostMapping("/survey/complete")
+    @PostMapping("/complete")
     public String complete(@Validated SurveyForm surveyForm, BindingResult result,
             RedirectAttributes redirectAttributes, Model model) {
 
