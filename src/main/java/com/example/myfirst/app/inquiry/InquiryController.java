@@ -1,5 +1,9 @@
 package com.example.myfirst.app.inquiry;
 
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,10 +14,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.myfirst.entity.Inquiry;
+import com.example.myfirst.service.InquiryService;
+
 @Controller
 // /inquiryにリクエストが来た時にこのクラスに処理を渡す
 @RequestMapping("/inquiry")
 public class InquiryController {
+
+    private final InquiryService inquiryService;
+
+    @Autowired
+    public InquiryController(InquiryService inquiryService) {
+        this.inquiryService = inquiryService;
+    }
+
+    @GetMapping("/")
+    public String index(Model model) {
+        List<Inquiry> list = inquiryService.geAll();
+        model.addAttribute("inquiryList", list);
+        model.addAttribute("title", "Inquiry Index");
+
+        return "inquiry/index";
+    }
 
     // inquiry/formにGETリクエストが来た時にこのメソッドが実行される
     @GetMapping("/form")
@@ -63,6 +86,17 @@ public class InquiryController {
             model.addAttribute("title", "Inquiry Form");
             return "inquiry/form";
         }
+
+        // 画面から取得した値で成り立つFormクラスオブジェクトの値をエンティティクラスのオブジェクトに詰め直す必要がある（formクラス→Entityクラス）
+        Inquiry inquiry = new Inquiry();
+        inquiry.setName(inquiryForm.getName());
+        inquiry.setEmail(inquiryForm.getEmail());
+        inquiry.setContents(inquiryForm.getContents());
+        inquiry.setCreated(new Timestamp(System.currentTimeMillis()));
+
+        // InquiryServiceのsaveメソッド呼び出しでレコードを保存している
+        inquiryService.save(inquiry);
+
         // この値が一度使用されると破棄される。→フラッシュスコープ
         redirectAttributes.addFlashAttribute("complete", "Registered!");
 
