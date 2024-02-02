@@ -13,15 +13,15 @@
             <th>id</th>
             <th>age</th>
             <th>satisfaction</th>
-            <th>comments</th>
-            <th>datetime</th>
+            <th>commnet</th>
+            <th>created</th>
         </tr>
-        <tr th:each="inquiry : ${inquiryList}">
-            <td th:text="${inquiry.id}">1</td>
-            <td th:text="${inquiry.name}"></td>
-            <td th:text="${inquiry.email}"></td>
-            <td th:text="${inquiry.contents}"></td>
-            <td th:text="${inquiry.created}"></td>
+        <tr th:each="survey : ${surveylist}">
+            <td th:text="${survey.age}">1</td>
+            <td th:text="${survey.id}">1</td>
+            <td th:text="${survey.satisfaction}">1</td>
+            <td th:text="${survey.comment}"></td>
+            <td th:text="${survey.created}"></td>
         </tr>
     </table>
 </body>

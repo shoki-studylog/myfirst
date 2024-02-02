@@ -1,5 +1,7 @@
 package com.example.myfirst.app.survey;
 
+import java.sql.Timestamp;
+
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
@@ -17,6 +19,8 @@ public class SurveyForm {
     @Size(min = 1, max = 200)
     private String comment;
 
+    private Timestamp created;
+
     public SurveyForm() {
 
     }
@@ -33,6 +37,10 @@ public class SurveyForm {
         return comment;
     }
 
+    public Timestamp getCreated() {
+        return created;
+    }
+
     public void setAge(int age) {
         this.age = age;
     }
@@ -43,5 +51,9 @@ public class SurveyForm {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
     }
 }

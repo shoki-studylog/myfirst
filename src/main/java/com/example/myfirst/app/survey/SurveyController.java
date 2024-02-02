@@ -1,5 +1,8 @@
 package com.example.myfirst.app.survey;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,9 +13,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.myfirst.entity.Survey;
+import com.example.myfirst.service.SurveyService;
+
 @Controller
 @RequestMapping("/survey")
 public class SurveyController {
+
+    private final SurveyService service;
+
+    @Autowired
+    public SurveyController(SurveyService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public String index(Model model) {
+
+        List<Survey> list = service.geAll();
+        model.addAttribute("title", "survey list");
+        model.addAttribute("surveylist", list);
+
+        return "survey/index";
+
+    }
 
     // formにGETリクエストした場合（初期遷移時）
     @GetMapping("/form")
@@ -50,6 +74,13 @@ public class SurveyController {
             model.addAttribute("title", "Survey Form");
             return "/survey/form";
         }
+        Survey survey = new Survey();
+        survey.setAge(surveyForm.getAge());
+        survey.setSatisfaction(survey.getSatisfaction());
+        survey.setComment(surveyForm.getComment());
+        survey.setCreated(surveyForm.getCreated());
+
+        service.save(survey);
 
         redirectAttributes.addFlashAttribute("complete", "Registered!");
 
