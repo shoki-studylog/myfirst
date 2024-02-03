@@ -16,6 +16,7 @@ public class InquiryForm {
     @Email(message = "Invalid E-mail Format")
     private String email;
 
+    @NotNull
     private String contents;
 
     // Counstructer

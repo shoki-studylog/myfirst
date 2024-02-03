@@ -32,10 +32,27 @@ public class InquiryController {
     @GetMapping("/")
     public String index(Model model) {
         List<Inquiry> list = inquiryService.geAll();
+
+        // Inquiry inquiry = new Inquiry();
+        // inquiry.setId(4);
+        // inquiry.setName("mark");
+        // inquiry.setEmail("sample4@example.con");
+        // inquiry.setContents("test,test");
+
+        // inquiryService.update(inquiry);
+
+        // メソッドの処理に対して独自例外をキャッチする（一つのコントローラー内のメソッドで発生した例外を処理する方法）
+        // try {
+        // inquiryService.update(inquiry);
+        // } catch (InquiryNotFoundException e) {
+        // model.addAttribute("message", e);
+        // return "/error/CustomPage";
+        // }
+
         model.addAttribute("inquiryList", list);
         model.addAttribute("title", "Inquiry Index");
 
-        return "inquiry/index";
+        return "inquiry/index_boot";
     }
 
     // inquiry/formにGETリクエストが来た時にこのメソッドが実行される
@@ -47,7 +64,7 @@ public class InquiryController {
     // 変数名は、フラッシュスコープの値をHTMLでレンダリングすることができる。
     public String form(InquiryForm inquiryform, Model model, @ModelAttribute("complete") String complete) {
         model.addAttribute("title", "Inquiry Form");
-        return "inquiry/form";
+        return "inquiry/form_boot";
 
     }
 
@@ -57,7 +74,7 @@ public class InquiryController {
     @PostMapping("/form")
     public String formGoBack(InquiryForm inquiryform, Model model) {
         model.addAttribute("title", "Inquiry Form");
-        return "inquiry/form";
+        return "inquiry/form_boot";
 
     }
 
@@ -68,12 +85,12 @@ public class InquiryController {
 
         if (result.hasErrors()) {
             model.addAttribute("title", "Inquiry Form");
-            return "inquiry/form";
+            return "inquiry/form_boot";
         }
 
         model.addAttribute("title", "Confirm Page");
 
-        return "inquiry/confirm";
+        return "inquiry/confirm_boot";
     }
 
     @PostMapping("/complete")
@@ -84,7 +101,7 @@ public class InquiryController {
 
         if (result.hasErrors()) {
             model.addAttribute("title", "Inquiry Form");
-            return "inquiry/form";
+            return "inquiry/form_boot";
         }
 
         // 画面から取得した値で成り立つFormクラスオブジェクトの値をエンティティクラスのオブジェクトに詰め直す必要がある（formクラス→Entityクラス）
@@ -103,5 +120,12 @@ public class InquiryController {
         // これは、htmlを指しているわけではなく、URLを表している。（リダイレクト時のURL)
         return "redirect:/inquiry/form";
     }
+
+    // InquiryNotFoundExceptionがスローされた時に下記メソッドが実行される。（一つのコントローラーで発生した例外を処理する方法）
+    // @ExceptionHandler(InquiryNotFoundException.class)
+    // public String hadleException(InquiryNotFoundException e, Model model) {
+    // model.addAttribute("message", e);
+    // return "error/CustomPage";
+    // }
 
 }
